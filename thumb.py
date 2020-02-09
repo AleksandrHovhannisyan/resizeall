@@ -22,7 +22,7 @@ def main():
     parser.add_argument('s', type=int, help='The desired size of the thumbnails (e.g., 32 for 32x32).')
     parser.add_argument('--d', help='The directory to walk. If omitted, this is assumed to be the directory from which thumb was called.')
     parser.add_argument('--r', help='Walks all nested subdirectories if enabled.', action='store_true')
-    parser.add_argument('--t', help='The string tail to append to all thumbnail images, before the file extension (e.g., "32x32", "-thumbnail", etc.). By default, this will be whatever dimension you specified.')
+    parser.add_argument('--t', help='The string tail to append to all thumbnail images, before the file extension (e.g., "32x32", "-thumbnail", etc.). By default, this will be nxn, where n is whatever size you specified.')
     args = parser.parse_args()
 
     size = args.s
@@ -40,12 +40,14 @@ def main():
 
         for file in image_files:
             name, extension = os.path.splitext(file)
+            file_path = '{}{}'.format(os.path.join(dir_name, name), extension)
 
             # Skip files processed by the script, or else each successive iteration will
             # generate a new file for previously created thumbnails.
             if name.endswith(thumbnail_tail):
+                print(Fore.YELLOW + 'Skipping existing thumbnail: ' + Style.RESET_ALL + file_path)
                 continue
-
+            
             # Don't crash if it's not a real image file (good precation in case the dir has other file formats)          
             try:
                 img = Image.open(os.path.join(dir_name, file))
@@ -55,10 +57,11 @@ def main():
                 rgb_thumbnail = img.convert('RGB')
                 rgb_thumbnail.save(os.path.join(dir_name, name) + thumbnail_tail + extension.upper())
 
-                print(Fore.GREEN + 'Created thumbnail for: ' + Style.RESET_ALL + '{}{}'.format(os.path.join(dir_name, name), extension))
+                print(Fore.GREEN + 'Created thumbnail for: ' + Style.RESET_ALL + file_path)
 
             except Exception:
-                print(Fore.RED + 'Unable to process: ' + Style.RESET_ALL + '{}{}'.format(os.path.join(dir_name, name), extension))
+                print(Fore.RED + 'Unable to process: ' + Style.RESET_ALL + file_path)
+                
 
 
 if __name__ == "__main__":
