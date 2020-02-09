@@ -55,7 +55,7 @@ def main():
 
                 # In case we're working with JPG
                 rgb_thumbnail = img.convert('RGB')
-                rgb_thumbnail.save(os.path.join(dir_name, name) + thumbnail_tail + extension.upper())
+                rgb_thumbnail.save(os.path.join(dir_name, name) + thumbnail_tail + extension)
 
                 print(Fore.GREEN + 'Created thumbnail for: ' + Style.RESET_ALL + file_path)
 
