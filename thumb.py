@@ -19,15 +19,15 @@ except ImportError:
 
 def main():
     parser = argparse.ArgumentParser(description='Create thumbnails for all images in a directory.')
-    parser.add_argument('s', type=int, help='The desired size of the thumbnails (e.g., 32 for 32x32).')
-    parser.add_argument('--d', help='The directory to walk. If omitted, this is assumed to be the directory from which thumb was called.')
-    parser.add_argument('--r', help='Walks all nested subdirectories if enabled.', action='store_true')
-    parser.add_argument('--t', help='The string tail to append to all thumbnail images, before the file extension (e.g., "32x32", "-thumbnail", etc.). By default, this will be nxn, where n is whatever size you specified.')
+    parser.add_argument('size', type=int, help='The target resolution of the thumbnails (e.g., 32 for 32x32).')
+    parser.add_argument('--dir', help='The directory to walk. If omitted, this is assumed to be the directory from which thumb was called.')
+    parser.add_argument('--recursive', help='Walks all nested subdirectories if enabled.', action='store_true')
+    parser.add_argument('--tail', help='The string tail to append to all thumbnail images, before the file extension (e.g., "32x32", "-thumbnail", etc.). By default, this will be nxn, where n is whatever size you specified.')
     args = parser.parse_args()
 
-    size = args.s
-    target_dir = args.d if args.d else '.'
-    thumbnail_tail = args.t if args.t else '{}x{}'.format(size, size)
+    size = args.size
+    target_dir = args.dir if args.dir else '.'
+    thumbnail_tail = args.tail if args.tail else '{}x{}'.format(size, size)
 
     for dir_name, subdir_list, file_list in os.walk(target_dir):
 
@@ -35,7 +35,7 @@ def main():
         image_files = [f for f in glob.glob('{}/*.*'.format(target_dir))]
 
         # If the user wants to walk all nested subdirectories
-        if args.r:
+        if args.recursive:
             image_files = file_list
 
         for file in image_files:
