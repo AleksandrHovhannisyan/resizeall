@@ -8,7 +8,7 @@
 
 2. Run `chmod a+x thumb.py`.
 
-3. Create a soft link to the script using `sudo ln -s path/to/downloads/webp.py /usr/bin/webp`.
+3. Create a soft link to the script using `sudo ln -s path/to/downloads/thumb.py /usr/bin/thumb`.
 
 ## Usage and Syntax
 
