@@ -1,49 +1,48 @@
-# thumb
+# resizeall
 
-> Create thumbnails for all images in a directory with one simple command.
+> Resize all images in a directory, including GIFs, animated WebP, and more.
 
-## Getting Started
+## Motivation
 
-1. Download `thumb.py`.
+I created this custom script as an alternative to ImageMagick's `convert`. You may find that ImageMagick suits your needs and is simpler to use.
 
-2. Run `chmod a+x thumb.py`.
+## Installation
 
-3. Create a soft link to the script using `sudo ln -s path/to/downloads/thumb.py /usr/bin/thumb`.
+1. Clone this repo.
+2. Run `chmod u+x resizeall.py`.
+3. Create a soft link to the script using `sudo ln -s /path/to/resizeall.py /usr/bin/resizeall`.
 
 ## Usage and Syntax
 
-> **Note**: You can run `thumb -h` to see a list of all available options.
-
-This script creates thumbnails for all valid images in a directory (and potentially all nested directories, if the recursive flag is enabled). The only required argument is the size of the thumbnails.
-
-Syntax:
+Run `resizeall -h` to view this help menu:
 
 ```
-usage: thumb [-h] [--dir DIR] [--recursive] [--tail TAIL] size
+usage: resizeall.py [-h] [--width [WIDTH]] [--source [SOURCE]]
+                    [--output [OUTPUT]] [--tail TAIL]
 
-Create thumbnails for all images in a directory.
-
-positional arguments:
-  size         The target resolution of the thumbnails (e.g., 32 for 32x32).
+Resizes all images in a directory, preserving their aspect ratio.
 
 optional arguments:
-  -h, --help   show this help message and exit
-  --dir DIR    The directory to walk. If omitted, this is assumed to be the
-               directory from which thumb was called.
-  --recursive  Walks all nested subdirectories if enabled.
-  --tail TAIL  The string tail to append to all thumbnail images, before the
-               file extension (e.g., "32x32", "-thumbnail", etc.). By default,
-               this will be nxn, where n is whatever size you specified.
+  -h, --help         show this help message and exit
+  --width [WIDTH]    The target width of the resized images.
+  --source [SOURCE]  The source directory containing images to be processed.
+                     If omitted, defaults to the directory from which the
+                     script was invoked.
+  --output [OUTPUT]  The output directory for the resized images.
+  --tail TAIL        A string to append to all resized images, after the
+                     original name but before the file extension (e.g.,
+                     "-thumbnail"). By default, this will be w, where w is
+                     whatever width you specified.
 ```
 
-Example:
+Example usage:
 
 ```bash
-thumb 32 --recursive
+resizeall --source /path/to/images --width 32
 ```
 
-This will create 32x32 thumbnails for all images in the directory from which the command was run. All thumbnail file names will end in '32x32' before the extension. For example, if the script processes `my-image.JPG`, the thumbnail will be saved as `my-image32x32.JPG`.
+This will resize all images in `/path/to/images` to `32px` width, preserving their aspect ratio. The images will be saved to the same directory as the source (unless you specify an explicit output directory).
 
-> **Note 1**: Files that don't end in a valid image extension will not be processed.
+> **Note**: Files that don't end in a valid image extension will not be processed.
 
-> **Note 2**: Files that end in the specified tail will not be processed. This is to prevent re-processing any thumbnails you create (if this weren't prevented, you'd create thumbnails for your thumbnails).
+> **Note**: Files that end in the specified tail will not be processed. This is to prevent re-processing any thumbnails you create (if this weren't prevented, you'd create thumbnails for your thumbnails).
