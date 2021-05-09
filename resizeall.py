@@ -3,6 +3,7 @@ import sys
 import os
 import glob
 import argparse
+import imghdr
 try:
     from PIL import Image
 except ImportError:
@@ -18,7 +19,7 @@ except ImportError:
 
 def main():
     parser = argparse.ArgumentParser(description='Resizes all images in a directory, preserving their aspect ratio.')
-    parser.add_argument('--width', type=int, nargs='?', help='The target width of the resized images.')
+    parser.add_argument('--width', type=int, required=True, help='The target width of the resized images.')
     parser.add_argument('--source', type=str, nargs='?', default='.', help='The source directory containing images to be processed. If omitted, defaults to the directory from which the script was invoked.')
     parser.add_argument('--output', type=str, nargs='?', help='The output directory for the resized images.')
     parser.add_argument('--tail', type=str, help='A string to append to all resized images, after the original name but before the file extension (e.g., "-thumbnail"). By default, this will be w, where w is whatever width you specified.')
@@ -29,14 +30,13 @@ def main():
     output_dir = args.output if args.output else source_dir
     tail = args.tail if args.tail else f'-{width}'
 
-    image_extensions = ['.png', '.jpg', '.gif', '.webp']
-
     # Make sure the output path actually exists (for when we create and save images later)
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
     # Get all the image files in the source dir
-    image_files = [file for file in os.listdir(source_dir) if os.path.splitext(file)[1] in image_extensions]
+    files = filter(os.path.isfile, os.listdir(source_dir))
+    image_files = [file for file in files if imghdr.what(file)]
 
     for image_file in image_files:
         fully_qualified_image_path = os.path.join(source_dir, image_file)
