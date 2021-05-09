@@ -1,6 +1,6 @@
 # resizeall
 
-> Resize all images in a directory, including GIFs, animated WebP, and more.
+> Resize all images in a directory.
 
 ## Motivation
 
