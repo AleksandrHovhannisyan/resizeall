@@ -10,7 +10,7 @@ I created this custom script as an alternative to ImageMagick's `convert`. You m
 
 1. Clone this repo.
 2. Run `chmod u+x resizeall.py`.
-3. Create a soft link to the script using `sudo ln -s /path/to/resizeall.py /usr/bin/resizeall`.
+3. Create a soft link to the script using `sudo ln -s /path/to/resizeall.py /usr/local/bin/resizeall`.
 
 ## Usage and Syntax
 
